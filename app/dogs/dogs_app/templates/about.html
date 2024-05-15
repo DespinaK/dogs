@@ -1,4 +1,15 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
-About this app....
-{% endblock %} 
+<a class="collapse-item" href="{% url 'about' %}">Ab Page</a>
+<div class="container">
+  <br>
+  <h1>Welcome to our Community-Driven Pet Tracking Web App!</h1>
+  <br>
+  <p>Never lose hope when your furry friend goes missing! Our platform is here to help reunite lost pets with their families.</p>
+  <p>Users can effortlessly upload images and details of their missing or found pets, fostering quick connections with concerned owners or caretakers.</p>
+  <p>We provide a centralized hub where individuals can report and search for lost companions, streamlining the reunion process.</p>
+  <p>By leveraging the power of online networking, we significantly enhance the chances of locating and returning lost pets promptly.</p>
+  <p>With our intuitive interface and shared commitment to animal welfare, we encourage collaboration among users, boosting the likelihood of successful reunions.</p>
+</div>
+
+{% endblock %}
