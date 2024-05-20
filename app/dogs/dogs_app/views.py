@@ -4,6 +4,8 @@ from django.shortcuts import render, HttpResponse
 from .models import TodoItem
 from django.contrib.auth import authenticate, login
 # Create your views here.
+
+
 def home(request):
     return render(request, "home.html")
 
@@ -35,7 +37,7 @@ def custom_login(request):
         if user is not None:
             login(request, user)
             return redirect('home')  # Redirect to home page after successful login
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
 
 def register(request):
     if request.method == 'POST':
@@ -46,3 +48,6 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+def logout(request):
+    return render(request, "logout.html")
