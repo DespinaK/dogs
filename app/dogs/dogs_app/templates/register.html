@@ -1,5 +1,13 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+{% load static %}
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style_reg.css' %}">
+</head>
+<div class="register-container">
+    <h1>Register</h1>
+    <form method="post" class="register-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+</div>

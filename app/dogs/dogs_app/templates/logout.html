@@ -3,6 +3,46 @@
 <head>
   <meta charset="utf-8">
   <title>Logged Out</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #333; /* Dark gray background */
+    }
+    
+    h1 {
+      color: #fff; /* White text color */
+      font-size: 48px; /* Larger font size */
+      animation: fade-in 1.5s; /* Animation */
+    }
+    
+    p {
+      color: #fff; /* White text color */
+      font-size: 24px; /* Larger font size */
+      animation: fade-in 2s; /* Animation */
+    }
+    
+    a {
+      text-decoration: none;
+      color: #337ab7;
+    }
+    
+    a:hover {
+      color: #23527c;
+    }
+    
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>You have been logged out.</h1>

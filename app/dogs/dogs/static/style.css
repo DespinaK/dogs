@@ -15,6 +15,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    
 }
 
 .login-container h1 {
@@ -32,7 +33,7 @@ body {
 }
 
 .form-group input[type="text"], .form-group input[type="password"] {
-    width: 100%;
+    width: 93%;
     height: 40px;
     padding: 10px;
     border: 1px solid #ccc;
