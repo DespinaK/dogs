@@ -3,6 +3,8 @@ from django.shortcuts import redirect
 from django.shortcuts import render, HttpResponse
 from .models import TodoItem
 from django.contrib.auth import authenticate, login
+from .forms import PostForm
+from .models import Post
 # Create your views here.
 
 
@@ -18,6 +20,16 @@ def about(request):
 
 def contact(request):
     return render(request, "contact.html")
+
+def entries(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post_success')
+    else:
+        form = PostForm()
+    return render(request, 'entries.html', {'form': form})
 
 '''def register(request):
     if request.method == 'POST':
@@ -51,3 +63,11 @@ def register(request):
 
 def logout(request):
     return render(request, "logout.html")
+
+
+def post_success(request):
+    return render(request, 'post_success.html')
+
+def view_posts(request):
+    posts = Post.objects.all()
+    return render(request, 'posts.html', {'posts': posts})

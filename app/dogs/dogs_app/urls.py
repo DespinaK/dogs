@@ -14,4 +14,7 @@ urlpatterns= [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', views.custom_login, name='login'),
     path('accounts/logout/', views.logout, name='logout'),
-]
+    path("entries/", views.entries, name="entries"),
+    #path('make_post/', views.make_post, name='make_post'),
+    path('post_success/', views.post_success, name='post_success'),
+    path('posts/', views.view_posts, name='posts'),]

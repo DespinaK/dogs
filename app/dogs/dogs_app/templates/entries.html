@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+{% load static %}
+{% block content %}
+<head><link rel="stylesheet" type="text/css" href="{% static 'sidebar_geo.css' %}">
+</head>
+
+<h1>Create a New Post</h1>
+<form method="post" class="post-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Post</button>
+</form>
+
+<a class="collapse-item" href="{% url 'entries' %}">Entries</a>
+
+<style>
+  #map {
+    width: 400px; /* Adjust the width as needed */
+    height: 300px; /* Adjust the height as needed */
+    position: absolute;
+    top: 200px; /* Adjust top to leave space for slider */
+    left: 900px; /* Adjust left to position it appropriately */
+    margin: 10px;
+    z-index: 1000; /* Ensure the map is on top */
+  }
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start */
+    padding: 10px;
+  }
+  .slider-container {
+    margin-top: 20px; /* Add some margin above the slider */
+    position: absolute;
+    top: 20px; /* Position slider at the top */
+    left: 950px; /* Align with map */
+    z-index: 1001; /* Ensure slider is above the map */
+  }
+</style>
+
+<div class="main-content">
+  <div class="slider-container">
+    <label for="radiusSlider">Select Radius (km):</label>
+    <input type="range" class="slider" id="radiusSlider" min="1" max="100" value="10">
+    <div class="radius-display">Radius: <span id="radiusValue">10</span> km</div>
+  </div>
+  <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var slider = document.getElementById("radiusSlider");
+    var output = document.getElementById("radiusValue");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+      updateCircle(this.value);
+    }
+    
+    var map = L.map('map').setView([51.505, -0.09], 13); // Default location
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    var circle = L.circle([51.505, -0.09], {
+      color: '#ADD8E6',
+      fillColor: '#ADD8E6',
+      fillOpacity: 0.4,
+      radius: slider.value * 1000 // Radius in meters
+    }).addTo(map);
+    
+    function updateCircle(radius) {
+      circle.setRadius(radius * 1000); // Radius in meters
+    }
+    
+    // Check if the browser supports Geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        map.setView([lat, lon], 13);
+        circle.setLatLng([lat, lon]);
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  });
+</script>
+
+{% endblock %}

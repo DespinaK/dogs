@@ -1,0 +1,12 @@
+<!-- radius_slider.html -->
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="slider-container">
+    <label for="radiusSlider">Select Radius (km):</label>
+    <input type="range" class="slider" id="radiusSlider" min="1" max="100" value="10">
+    <div class="radius-display">Radius: <span id="radiusValue">10</span> km</div>
+  </div>
+{% endblock %}
+  
