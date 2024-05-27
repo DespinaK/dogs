@@ -4,7 +4,10 @@
   <h1>Posts</h1>
   <ul>
     {% for post in posts %}
-      <li>{{ post.title }} ({{ post.created_at }})</li>
+      <li>
+        {{ post.title }} ({{ post.created_at }})
+        <p>{{ post.content }}</p>
+      </li>
     {% empty %}
       <li>No posts yet.</li>
     {% endfor %}
