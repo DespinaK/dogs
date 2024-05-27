@@ -7,6 +7,9 @@
       <li>
         {{ post.title }} ({{ post.created_at }})
         <p>{{ post.content }}</p>
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="Post Image">
+        {% endif %}
       </li>
     {% empty %}
       <li>No posts yet.</li>

@@ -1,25 +1,24 @@
-
-
-  <h1>Create a New Post</h1>
-  <form method="post">
+<h1>Create a New Post</h1>
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    <input type="file" name="image" accept="image/*">
     <button type="submit">Post</button>
-  </form>
-  <!-- Add your map code here -->
-  <div class="main-content">
+</form>
+<!-- Add your map code here -->
+<div class="main-content">
     <div class="slider-container">
-      <label for="radiusSlider">Select Radius (km):</label>
-      <input type="range" class="slider" id="radiusSlider" min="1" max="100" value="10">
-      <div class="radius-display">Radius: <span id="radiusValue">10</span> km</div>
+        <label for="radiusSlider">Select Radius (km):</label>
+        <input type="range" class="slider" id="radiusSlider" min="1" max="100" value="10">
+        <div class="radius-display">Radius: <span id="radiusValue">10</span> km</div>
     </div>
     <div id="map"></div>
-  </div>
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
+</div>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Your JavaScript code here...
+        // Your JavaScript code here...
     });
-  </script>
+</script>
 {% endblock %}
