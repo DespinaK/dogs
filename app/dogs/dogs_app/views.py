@@ -4,7 +4,7 @@ from django.shortcuts import render, HttpResponse
 from .models import TodoItem
 from django.contrib.auth import authenticate, login
 from .forms import PostForm
-from .models import Post
+from .models import Post, Location
 # Create your views here.
 
 
@@ -25,21 +25,20 @@ def entries(request):
     if request.method == 'POST':
         form = PostForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            location = Location(
+                latitude=float(request.POST['location'].split(',')[0]),
+                longitude=float(request.POST['location'].split(',')[1])
+            )
+            location.save()
+            #form.save()
+            
+            post.location = location
+            post.save()
             return redirect('post_success')
     else:
         form = PostForm()
     return render(request, 'entries.html', {'form': form})
-
-'''def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # Redirect to login page after successful registration
-    else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})'''
 
 def custom_login(request):
     if request.method == 'POST':
