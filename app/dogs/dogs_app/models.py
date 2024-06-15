@@ -1,4 +1,6 @@
+import uuid
 from django.db import models
+from django.contrib.gis.db import models as gis_models 
 
 # Create your models here.
 
@@ -7,16 +9,19 @@ class TodoItem(models.Model):
     completed = models.BooleanField(default=False)
 
 class Location(models.Model):
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
-
+    temp_id = models.UUIDField(default=uuid.uuid4, primary_key=True,unique=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    #location = gis_models.PointField(srid=4326, null=True, default=None)
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
-    image = models.ImageField(upload_to='post_images', null=True, blank=True)
-
-    def __str__(self):
-        return self.title
+    image = models.ImageField(upload_to='images/', null=True, blank=True) 
     
+    #location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    #latitude = models.DecimalField(max_digits=9, decimal_places=8, null=True, blank=True)
+    #longitude = models.DecimalField(max_digits=9, decimal_places=8, null=True, blank=True)
+    #location = models.PointField(srid=4326, null=True, default=None)
+
+

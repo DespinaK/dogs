@@ -19,7 +19,9 @@ urlpatterns= [
     path("entries/", views.entries, name="entries"),
     #path('make_post/', views.make_post, name='make_post'),
     path('post_success/', views.post_success, name='post_success'),
-    path('posts/', views.view_posts, name='posts'),]
+    path('posts/', views.posts, name='posts'),
+    
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

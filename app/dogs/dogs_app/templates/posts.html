@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Posts</h1>
-  <ul>
+  <ul id="post-list">
     {% for post in posts %}
       <li>
         {{ post.title }} ({{ post.created_at }})
@@ -12,7 +12,113 @@
         {% endif %}
       </li>
     {% empty %}
-      <li>No posts yet.</li>
+      <li>No posts within the selected radius.</li>
     {% endfor %}
   </ul>
+
+  <style>
+    #map {
+      width: 400px;
+      height: 300px;
+      position: absolute;
+      top: 200px;
+      left: 900px;
+      margin: 10px;
+      z-index: 1000;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+    .slider-container {
+      margin-top: 20px;
+      position: absolute;
+      top: 20px;
+      left: 950px;
+      z-index: 1001;
+    }
+  </style>
+
+  <div class="main-content">
+    <div class="slider-container">
+      <label for="radiusSlider">Select Radius (km):</label>
+      <input type="range" class="slider" id="radiusSlider" min="1" max="100" value="10">
+      <div class="radius-display">Radius: <span id="radiusValue">10</span> km</div>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var slider = document.getElementById("radiusSlider");
+    var output = document.getElementById("radiusValue");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+      updateCircle(this.value);
+      fetchPosts(this.value);
+    }
+    
+    var map = L.map('map').setView([51.505, -0.09], 13); // Default location
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    var circle = L.circle([51.505, -0.09], {
+      color: '#ADD8E6',
+      fillColor: '#ADD8E6',
+      fillOpacity: 0.4,
+      radius: slider.value * 1000 // Radius in meters
+    }).addTo(map);
+    
+    function updateCircle(radius) {
+      circle.setRadius(radius * 1000); // Radius in meters
+    }
+    
+    function fetchPosts(radius) {
+      var lat = map.getCenter().lat;
+      var lon = map.getCenter().lng;
+      var xhr = new XMLHttpRequest();
+      
+      xhr.open('GET', `/posts?radius=${radius}&lat=${lat}&lon=${lon}`, true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var posts = JSON.parse(xhr.responseText);
+          var postList = document.getElementById('post-list');
+          postList.innerHTML = '';
+          if (posts.length > 0) {
+            posts.forEach(function(post) {
+              var postElement = document.createElement('li');
+              postElement.innerHTML = `
+                ${post.title} (${post.created_at})
+                <p>${post.content}</p>
+                ${post.image ? `<img src="${post.image.url}" alt="Post Image">` : ''}
+              `;
+              postList.appendChild(postElement);
+            });
+          } else {
+            postList.innerHTML = '<li>No posts within the selected radius.</li>';
+          }
+        }
+      };
+      xhr.send();
+    }
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        map.setView([lat, lon], 13);
+        circle.setLatLng([lat, lon]);
+        fetchPosts(slider.value);
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  });
+</script>
 {% endblock %}
